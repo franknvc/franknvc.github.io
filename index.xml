@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Frank&#39;s Redily</title>
+    <link>http://example.org/</link>
+    <description>Recent content on Frank&#39;s Redily</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Apr 2021 16:48:37 +0200</lastBuildDate><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Me</title>
+      <link>http://example.org/gallery/me/</link>
+      <pubDate>Thu, 01 Apr 2021 16:48:37 +0200</pubDate>
+      
+      <guid>http://example.org/gallery/me/</guid>
+      <description>This is me.</description>
+    </item>
+    
+    <item>
+      <title>Arizona, Us</title>
+      <link>http://example.org/gallery/arizona-us/</link>
+      <pubDate>Thu, 01 Apr 2021 16:28:42 +0200</pubDate>
+      
+      <guid>http://example.org/gallery/arizona-us/</guid>
+      <description>The Grand Canyon is a steep-sided canyon carved by the Colorado River in Arizona, United States. The canyon is 277 miles (446 km) long, up to 18 miles (29 km) wide and attains a depth of over a mile (6,093 feet or 1,857 meters).</description>
+    </item>
+    
+    <item>
+      <title>Second blog</title>
+      <link>http://example.org/posts/second-blog/</link>
+      <pubDate>Thu, 01 Apr 2021 11:47:56 +0200</pubDate>
+      
+      <guid>http://example.org/posts/second-blog/</guid>
+      <description>Description&amp;hellip;
+Tech used  item item item  </description>
+    </item>
+    
+    <item>
+      <title>How I created my blog using Hugo</title>
+      <link>http://example.org/posts/how-i-created-my-blog-using-hugo/</link>
+      <pubDate>Thu, 01 Apr 2021 11:44:48 +0200</pubDate>
+      
+      <guid>http://example.org/posts/how-i-created-my-blog-using-hugo/</guid>
+      <description>&lt;p&gt;In the last few years, static site generators have gathered lots of attention with the like of Hugo, etc&amp;hellip; These static site generators are mostly used for informative websites such as blog with features that help user to focus more on writing contents.&lt;/p&gt;
+&lt;p&gt;The most popular generator is Hugo, which is written in the Go language and claimed to have the fastest speed among all generators.&lt;/p&gt;
+&lt;p&gt;As the result, Hugo was chosen to be the generator for this blog.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>S1mone</title>
+      <link>http://example.org/projects/s1mone/</link>
+      <pubDate>Thu, 01 Apr 2021 11:25:50 +0200</pubDate>
+      
+      <guid>http://example.org/projects/s1mone/</guid>
+      <description>A Virtual Personal Assistant with a robot interface inspired by the movie &amp;ldquo;Wall-E&amp;rdquo;. Your own personal assistant, equipped with facial recognition, voice recognition, and the ability to chitchat will be first among many other features.
+Tech used  In this version 0.1, we started with a simple GUI with animated eyes to motivate ourselves in the long journey to make our assistant S1mone a little better and friendlier.
+ Your browser doesn&#39;t support embedded videos, but don&#39;t worry, you can download it and watch it with your favorite video player!</description>
+    </item>
+    
+    <item>
+      <title>Pixee</title>
+      <link>http://example.org/projects/pixee/</link>
+      <pubDate>Thu, 01 Apr 2021 11:05:56 +0200</pubDate>
+      
+      <guid>http://example.org/projects/pixee/</guid>
+      <description>A simple Pixel Art Maker written in Python. With this tool, you will be able to create pixel art quickly and save them for further use in the future. The GUI is designed using the tkinter library.
+Tech used figure 1
+ The window consists of a drawing canvas in grid style which simulates the pixels and a button on the top left corner which opens a color palette.
+ figure 2</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>http://example.org/about/</link>
+      <pubDate>Thu, 01 Apr 2021 09:48:35 +0200</pubDate>
+      
+      <guid>http://example.org/about/</guid>
+      <description>figure
+Software Developer with a degree in the field of Information Technology, well-rounded knowledge of OOP, REST, and love for Python and Flask. Looking for an opportunity to work and upgrade, as well as being involved in a organization that believes in maintaining a competitive edge.</description>
+    </item>
+    
+    <item>
+      <title>Voluntary Internship</title>
+      <link>http://example.org/timeline/data42/</link>
+      <pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/timeline/data42/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Submission of Master Thesis</title>
+      <link>http://example.org/timeline/master-thesis/</link>
+      <pubDate>Sun, 01 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/timeline/master-thesis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Publication for Master Project</title>
+      <link>http://example.org/timeline/publication/</link>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/timeline/publication/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Master Project</title>
+      <link>http://example.org/timeline/master-project/</link>
+      <pubDate>Sun, 01 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/timeline/master-project/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Started Master Degree</title>
+      <link>http://example.org/timeline/ias/</link>
+      <pubDate>Thu, 01 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/timeline/ias/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Associate Developer at CSC Vietnam</title>
+      <link>http://example.org/timeline/csc/</link>
+      <pubDate>Mon, 01 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/timeline/csc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Started Bachelor Degree</title>
+      <link>http://example.org/timeline/rmit/</link>
+      <pubDate>Fri, 01 Jun 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/timeline/rmit/</guid>
+      <description>2012: Started at Royal Melbourne Institut of Technology (RMIT), Bachelor of Information Technology, Major of Application Programming, Vietnam</description>
+    </item>
+    
+    <item>
+      <title>Graduated High School</title>
+      <link>http://example.org/timeline/njc/</link>
+      <pubDate>Sat, 31 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/timeline/njc/</guid>
+      <description>2011: Graduated rom National Junior College (NJC), Singapore</description>
+    </item>
+    
+  </channel>
+</rss>

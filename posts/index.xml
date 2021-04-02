@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Frank&#39;s Redily</title>
+    <link>http://example.org/posts/</link>
+    <description>Recent content in Posts on Frank&#39;s Redily</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Apr 2021 11:47:56 +0200</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Second blog</title>
+      <link>http://example.org/posts/second-blog/</link>
+      <pubDate>Thu, 01 Apr 2021 11:47:56 +0200</pubDate>
+      
+      <guid>http://example.org/posts/second-blog/</guid>
+      <description>Description&amp;hellip;
+Tech used  item item item  </description>
+    </item>
+    
+    <item>
+      <title>How I created my blog using Hugo</title>
+      <link>http://example.org/posts/how-i-created-my-blog-using-hugo/</link>
+      <pubDate>Thu, 01 Apr 2021 11:44:48 +0200</pubDate>
+      
+      <guid>http://example.org/posts/how-i-created-my-blog-using-hugo/</guid>
+      <description>&lt;p&gt;In the last few years, static site generators have gathered lots of attention with the like of Hugo, etc&amp;hellip; These static site generators are mostly used for informative websites such as blog with features that help user to focus more on writing contents.&lt;/p&gt;
+&lt;p&gt;The most popular generator is Hugo, which is written in the Go language and claimed to have the fastest speed among all generators.&lt;/p&gt;
+&lt;p&gt;As the result, Hugo was chosen to be the generator for this blog.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
