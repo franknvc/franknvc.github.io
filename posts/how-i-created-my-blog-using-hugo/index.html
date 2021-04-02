@@ -1,66 +1,10 @@
-<!DOCTYPE html>
-<html><head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Frank&#39;s Redily</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head><body class="terminal">
-    <section class="window"><header class="window-header">
-    <div class="logo terminal-prompt">
-        
-        
-        <a href="https://franknvc.github.io/" class="no-style ">Frank&#39;s Redily</a>
-        <span style="color: blue;">:~#</span>
-        
-            
-            
-                <a href='https://franknvc.github.io/posts'>posts</a><span style="color: #1a95e0;">/</span>
-            
-        
-            
-            
-                <a href='https://franknvc.github.io/posts/how-i-created-my-blog-using-hugo'>how-i-created-my-blog-using-hugo</a><span style="color: #1a95e0;">/</span>
-            
-        
-            
-            
-        
-    </div>
-    <div class="window-controls">
-        <span class="control-item control-minimize">‒</span>
-        <span class="control-item control-maximize">□</span>
-        <span class="control-item control-close">˟</span>
-    </div>
-</header><main class="window-content" id="content">
-            <div class="container scrollable">
-                <div class="window-cursor">
-                    <span class="i-cursor-indicator">></span>
-                    <div class="terminal-nav">
-                        <nav class="terminal-menu">
-                            <ul vocab="https://schema.org/" typeof="BreadcrumbList">
-                                <li><a href="/about" typeof="ListItem">/about</a></li>
-                                <li><a href="/posts" typeof="ListItem">/posts</a></li>
-                                <li><a href="/projects" typeof="ListItem">/projects</a></li>
-                                <li><a href="/gallery" typeof="ListItem">/photos</a></li>
-                                <li><a href="/timeline" typeof="ListItem">/resumé</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <span class="i-cursor-underscore"></span>
-                </div>
-<h1>How I created my blog using Hugo</h1>
-
-Apr. 1, 2021
-
-<br/><br/>
-<p>In the last few years, static site generators have gathered lots of attention with the like of Hugo, etc&hellip; These static site generators are mostly used for informative websites such as blog with features that help user to focus more on writing contents.</p>
-<p>The most popular generator is Hugo, which is written in the Go language and claimed to have the fastest speed among all generators.</p>
-<p>As the result, Hugo was chosen to be the generator for this blog.</p>
-<h2 id="creating-your-site">Creating your site</h2>
-<p>Hugo has a built-in command that generates a website project for you; this includes all of the files and directories you need to get started.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hugo new site portfolio
-</code></pre></div><p>This creates the following files and directories:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">portfolio/
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Frank's Redily</title><link rel=stylesheet href=/css/style.css></head><body class=terminal><section class=window><header class=window-header><div class="logo terminal-prompt"><a href=https://franknvc.github.io/ class=no-style>Frank's Redily</a>
+<span style=color:blue>:~#</span>
+<a href=https://franknvc.github.io/posts>posts</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/how-i-created-my-blog-using-hugo>how-i-created-my-blog-using-hugo</a><span style=color:#1a95e0>/</span></div><div class=window-controls><span class="control-item control-minimize">‒</span>
+<span class="control-item control-maximize">□</span>
+<span class="control-item control-close">˟</span></div></header><main class=window-content id=content><div class="container scrollable"><div class=window-cursor><span class=i-cursor-indicator>></span><div class=terminal-nav><nav class=terminal-menu><ul vocab="https://schema.org/" typeof="BreadcrumbList"><li><a href=/about typeof="ListItem">/about</a></li><li><a href=/posts typeof="ListItem">/posts</a></li><li><a href=/projects typeof="ListItem">/projects</a></li><li><a href=/gallery typeof="ListItem">/photos</a></li><li><a href=/timeline typeof="ListItem">/resumé</a></li></ul></nav></div><span class=i-cursor-underscore></span></div><h1>How I created my blog using Hugo</h1>Apr. 1, 2021<br><br><p>In the last few years, static site generators have gathered lots of attention with the like of Hugo, etc&mldr; These static site generators are mostly used for informative websites such as blog with features that help user to focus more on writing contents.</p><p>The most popular generator is Hugo, which is written in the Go language and claimed to have the fastest speed among all generators.</p><p>As the result, Hugo was chosen to be the generator for this blog.</p><h2 id=creating-your-site>Creating your site</h2><p>Hugo has a built-in command that generates a website project for you; this includes all of the files and directories you need to get started.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>hugo new site portfolio
+</code></pre></div><p>This creates the following files and directories:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>portfolio/
     |__ archetypes
     |  |__ default.md
     |__ config.toml
@@ -69,44 +13,8 @@ Apr. 1, 2021
     |__ layouts
     |__ static
     |__ themes
-</code></pre></div><ul>
-<li><code>archetypes</code>: where you place markdown templates for content; hugo uses the files in the <code>archetype</code> folder as models when it generates new content pages</li>
-<li><code>config.toml</code>: holds configuration variables for you site</li>
-<li><code>data</code>: holds data files in <code>yaml</code>, <code>json</code>, or <code>toml</code></li>
-<li><code>layouts</code>: where you define your site&rsquo;s look and feel</li>
-<li><code>static</code>: holds your css, javascript file, images, and any other assets</li>
-<li><code>themes</code>: holds any themes you download or create</li>
-</ul>
-<h2 id="layouts">Layouts</h2>
-<p>hugo requires you to create a layout for the home page, a single page layout for content pages, and a list layout that indexs content pages into categories.</p>
-<p>hugo uses a separate layout for the home page because it assumes that you&rsquo;ll want your home page to have a different look than other content pages. in my case, the homepage contain a brief introduction that lead to the about page, a list of recent articles, a list of my personal projects, and preview of other contents beside technical ones.</p>
-<p>in <code>layouts/_default</code>, you can find the single page layout that every content page will use, for e.g., the about page.</p>
-<p>when you create a theme, hugo generates the skeletons for parts that doesn&rsquo;t change such as header, footer, and navigation.</p>
-<p><code>baseof.html</code> will be the base of every other layout you&rsquo;ll create. instead of including the full skeleton, it&rsquo;s pulling in other files, or<em>partials</em>, which contain pieces of layout</p>
-<p>the <code>{{ range .Pages }}</code> is where the magic happens. the <code>.Pages</code> collection contains all the pages related to the section you&rsquo;re working with. the <code>range</code> function lets you iterate over the results so you can display each record in the collection</p>
-<h2 id="content">Content</h2>
-<p>in order to create new content, for e.g., to create a new &ldquo;About&rdquo; page:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hugo new about.md
-</code></pre></div><p>this will generate the file <code>content/about.md</code>.</p>
-<h2 id="theme">Theme</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hugo new theme basic
-</code></pre></div><h2 id="page-bundles">Page Bundles</h2>
-<p>content organization using page bundles
-page bundles are a way to group page resources.</p>
-<h2 id="build-and-deploy">Build and Deploy</h2>
-<p>when you use <code>hugo</code> command without any options, this will generate the pages for your site in a new directory named public, including the html files, xml files for your site&rsquo;s rss feed, and the sitemap.</p>
-<p>you then can upload the contents of the public folder to your web server or cdn.</p>
-<p>hugo doesn&rsquo;t clean up the <code>public</code> folder. you need to delete the generated versions from the <code>public</code> folder.</p>
-<p>you can tell hugo to minify the files it generates. this process remove whitespace characters, resulting in smaller file sizes that will make the site download faster.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hugo --cleanDestinationDir --minify
-</code></pre></div>
-
-
-            </div>
-
-            
-        </main>
-    </section>
-</body>
-
-</html>
+</code></pre></div><ul><li><code>archetypes</code>: where you place markdown templates for content; hugo uses the files in the <code>archetype</code> folder as models when it generates new content pages</li><li><code>config.toml</code>: holds configuration variables for you site</li><li><code>data</code>: holds data files in <code>yaml</code>, <code>json</code>, or <code>toml</code></li><li><code>layouts</code>: where you define your site&rsquo;s look and feel</li><li><code>static</code>: holds your css, javascript file, images, and any other assets</li><li><code>themes</code>: holds any themes you download or create</li></ul><h2 id=layouts>Layouts</h2><p>hugo requires you to create a layout for the home page, a single page layout for content pages, and a list layout that indexs content pages into categories.</p><p>hugo uses a separate layout for the home page because it assumes that you&rsquo;ll want your home page to have a different look than other content pages. in my case, the homepage contain a brief introduction that lead to the about page, a list of recent articles, a list of my personal projects, and preview of other contents beside technical ones.</p><p>in <code>layouts/_default</code>, you can find the single page layout that every content page will use, for e.g., the about page.</p><p>when you create a theme, hugo generates the skeletons for parts that doesn&rsquo;t change such as header, footer, and navigation.</p><p><code>baseof.html</code> will be the base of every other layout you&rsquo;ll create. instead of including the full skeleton, it&rsquo;s pulling in other files, or<em>partials</em>, which contain pieces of layout</p><p>the <code>{{ range .Pages }}</code> is where the magic happens. the <code>.Pages</code> collection contains all the pages related to the section you&rsquo;re working with. the <code>range</code> function lets you iterate over the results so you can display each record in the collection</p><h2 id=content>Content</h2><p>in order to create new content, for e.g., to create a new &ldquo;About&rdquo; page:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>hugo new about.md
+</code></pre></div><p>this will generate the file <code>content/about.md</code>.</p><h2 id=theme>Theme</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>hugo new theme basic
+</code></pre></div><h2 id=page-bundles>Page Bundles</h2><p>content organization using page bundles
+page bundles are a way to group page resources.</p><h2 id=build-and-deploy>Build and Deploy</h2><p>when you use <code>hugo</code> command without any options, this will generate the pages for your site in a new directory named public, including the html files, xml files for your site&rsquo;s rss feed, and the sitemap.</p><p>you then can upload the contents of the public folder to your web server or cdn.</p><p>hugo doesn&rsquo;t clean up the <code>public</code> folder. you need to delete the generated versions from the <code>public</code> folder.</p><p>you can tell hugo to minify the files it generates. this process remove whitespace characters, resulting in smaller file sizes that will make the site download faster.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>hugo --cleanDestinationDir --minify
+</code></pre></div></div></main></section></body></html>

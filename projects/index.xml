@@ -1,34 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Projects on Frank&#39;s Redily</title>
-    <link>https://franknvc.github.io/projects/</link>
-    <description>Recent content in Projects on Frank&#39;s Redily</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 01 Apr 2021 11:25:50 +0200</lastBuildDate><atom:link href="https://franknvc.github.io/projects/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>S1mone</title>
-      <link>https://franknvc.github.io/projects/s1mone/</link>
-      <pubDate>Thu, 01 Apr 2021 11:25:50 +0200</pubDate>
-      
-      <guid>https://franknvc.github.io/projects/s1mone/</guid>
-      <description>A Virtual Personal Assistant with a robot interface inspired by the movie &amp;ldquo;Wall-E&amp;rdquo;. Your own personal assistant, equipped with facial recognition, voice recognition, and the ability to chitchat will be first among many other features.
-Tech used  In this version 0.1, we started with a simple GUI with animated eyes to motivate ourselves in the long journey to make our assistant S1mone a little better and friendlier.
- Your browser doesn&#39;t support embedded videos, but don&#39;t worry, you can download it and watch it with your favorite video player!</description>
-    </item>
-    
-    <item>
-      <title>Pixee</title>
-      <link>https://franknvc.github.io/projects/pixee/</link>
-      <pubDate>Thu, 01 Apr 2021 11:05:56 +0200</pubDate>
-      
-      <guid>https://franknvc.github.io/projects/pixee/</guid>
-      <description>A simple Pixel Art Maker written in Python. With this tool, you will be able to create pixel art quickly and save them for further use in the future. The GUI is designed using the tkinter library.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Projects on Frank's Redily</title><link>https://franknvc.github.io/projects/</link><description>Recent content in Projects on Frank's Redily</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 01 Apr 2021 11:25:50 +0200</lastBuildDate><atom:link href="https://franknvc.github.io/projects/index.xml" rel="self" type="application/rss+xml"/><item><title>S1mone</title><link>https://franknvc.github.io/projects/s1mone/</link><pubDate>Thu, 01 Apr 2021 11:25:50 +0200</pubDate><guid>https://franknvc.github.io/projects/s1mone/</guid><description>A Virtual Personal Assistant with a robot interface inspired by the movie &amp;ldquo;Wall-E&amp;rdquo;. Your own personal assistant, equipped with facial recognition, voice recognition, and the ability to chitchat will be first among many other features.
+Tech used In this version 0.1, we started with a simple GUI with animated eyes to motivate ourselves in the long journey to make our assistant S1mone a little better and friendlier.
+Your browser doesn't support embedded videos, but don't worry, you can download it and watch it with your favorite video player!</description></item><item><title>Pixee</title><link>https://franknvc.github.io/projects/pixee/</link><pubDate>Thu, 01 Apr 2021 11:05:56 +0200</pubDate><guid>https://franknvc.github.io/projects/pixee/</guid><description>A simple Pixel Art Maker written in Python. With this tool, you will be able to create pixel art quickly and save them for further use in the future. The GUI is designed using the tkinter library.
 Tech used figure 1
- The window consists of a drawing canvas in grid style which simulates the pixels and a button on the top left corner which opens a color palette.
- figure 2</description>
-    </item>
-    
-  </channel>
-</rss>
+The window consists of a drawing canvas in grid style which simulates the pixels and a button on the top left corner which opens a color palette.
+figure 2</description></item></channel></rss>
