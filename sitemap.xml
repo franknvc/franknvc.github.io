@@ -3,112 +3,112 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://example.org/</loc>
+    <loc>https://franknvc.github.io/</loc>
     <lastmod>2021-04-01T16:48:37+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/gallery/me/</loc>
+    <loc>https://franknvc.github.io/gallery/me/</loc>
     <lastmod>2021-04-01T16:48:37+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/gallery/</loc>
+    <loc>https://franknvc.github.io/gallery/</loc>
     <lastmod>2021-04-01T16:48:37+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/gallery/arizona-us/</loc>
+    <loc>https://franknvc.github.io/gallery/arizona-us/</loc>
     <lastmod>2021-04-01T16:28:42+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/</loc>
+    <loc>https://franknvc.github.io/posts/</loc>
     <lastmod>2021-04-01T11:47:56+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/second-blog/</loc>
+    <loc>https://franknvc.github.io/posts/second-blog/</loc>
     <lastmod>2021-04-01T11:47:56+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/how-i-created-my-blog-using-hugo/</loc>
+    <loc>https://franknvc.github.io/posts/how-i-created-my-blog-using-hugo/</loc>
     <lastmod>2021-04-01T11:44:48+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/projects/</loc>
+    <loc>https://franknvc.github.io/projects/</loc>
     <lastmod>2021-04-01T11:25:50+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/projects/s1mone/</loc>
+    <loc>https://franknvc.github.io/projects/s1mone/</loc>
     <lastmod>2021-04-01T11:25:50+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/projects/pixee/</loc>
+    <loc>https://franknvc.github.io/projects/pixee/</loc>
     <lastmod>2021-04-01T11:05:56+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/about/</loc>
+    <loc>https://franknvc.github.io/about/</loc>
     <lastmod>2021-04-01T09:48:35+02:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/timeline/</loc>
+    <loc>https://franknvc.github.io/timeline/</loc>
     <lastmod>2020-02-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/timeline/data42/</loc>
+    <loc>https://franknvc.github.io/timeline/data42/</loc>
     <lastmod>2020-02-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/timeline/master-thesis/</loc>
+    <loc>https://franknvc.github.io/timeline/master-thesis/</loc>
     <lastmod>2019-09-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/timeline/publication/</loc>
+    <loc>https://franknvc.github.io/timeline/publication/</loc>
     <lastmod>2019-05-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/timeline/master-project/</loc>
+    <loc>https://franknvc.github.io/timeline/master-project/</loc>
     <lastmod>2017-10-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/timeline/ias/</loc>
+    <loc>https://franknvc.github.io/timeline/ias/</loc>
     <lastmod>2015-10-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/timeline/csc/</loc>
+    <loc>https://franknvc.github.io/timeline/csc/</loc>
     <lastmod>2014-09-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/timeline/rmit/</loc>
+    <loc>https://franknvc.github.io/timeline/rmit/</loc>
     <lastmod>2012-06-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/timeline/njc/</loc>
+    <loc>https://franknvc.github.io/timeline/njc/</loc>
     <lastmod>2011-12-31T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/categories/</loc>
+    <loc>https://franknvc.github.io/categories/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/tags/</loc>
+    <loc>https://franknvc.github.io/tags/</loc>
   </url>
   
 </urlset>
