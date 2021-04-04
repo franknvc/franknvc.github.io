@@ -261,6 +261,7 @@ ol ol {
   margin-top: 0;
   margin-bottom: 0;
 }
+
 .terminal-menu {
   width: 100%;
 }
@@ -444,7 +445,7 @@ hr {
 }
 
 .scrollable {
-  height: 90vh;
+  height: 80vh;
   overflow-y: scroll;
 }
 
@@ -452,6 +453,11 @@ hr {
 */
 .scrollable::-webkit-scrollbar {
   display: none;
+}
+
+footer.bottom {
+  position: fixed;
+  bottom: 0;
 }
 
 figure {
