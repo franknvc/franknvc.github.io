@@ -1,0 +1,73 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Frank's Redily</title><link rel=stylesheet href=/css/style.css></head><body class=terminal><section class=window><header class=window-header><div class="logo terminal-prompt"><a href=https://franknvc.github.io/ class=no-style>Frank's Redily</a>
+<span style=color:blue>:~#</span>
+<a href=https://franknvc.github.io/posts>posts</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/vue>vue</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/vue/hide-api-key>hide-api-key</a><span style=color:#1a95e0>/</span></div><div class=window-controls><span class="control-item control-minimize">‒</span>
+<span class="control-item control-maximize">□</span>
+<span class="control-item control-close">˟</span></div></header><main class=window-content id=content><div class=container><div class=window-cursor><span class=i-cursor-indicator>></span><div class=terminal-nav><nav class=terminal-menu><ul vocab="https://schema.org/" typeof="BreadcrumbList"><li><a href=/about typeof="ListItem">/about</a></li><li><a href=/posts typeof="ListItem">/posts</a></li><li><a href=/projects typeof="ListItem">/projects</a></li><li><a href=/gallery typeof="ListItem">/photos</a></li><li><a href=/resume typeof="ListItem">/resumé</a></li></ul></nav></div><span class=i-cursor-underscore></span></div><div class=scrollable><h1>[Vue] Hide Api Key in the back end</h1>Apr. 7, 2021<br><br><p>When starters try to build their first Vue app, one of the most common examples / tutorials is to build a weather app (the most common one being a Todo list).</p><p>Building weather app requires you to acquire an API key to retrieve weather data from some weather service provider, for e.g. <a href=https://www.openweathermap.org>OpenWeatherMap</a>. All of the tutorials will guide you to put this api key in the front end, which will be exposed through the request you make to the data endpoint. As such, sensitive information should be hidden away from user, normally by putting the key in an <code>env</code> config file, which in turn retrieved by the back end to complete the request query.</p><p>This post will show you briefly how to do this by creating an <code>Express</code> back end that retrieve the API key from the <code>.env</code> file.</p><h2 id=front-end>Front end</h2><p><img src=weather-app.jpg alt=UI></p><p>Here is an example how most of the tutorials will give you for the front end.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>template</span>&gt; ... &lt;/<span style=color:#f92672>template</span>&gt;
+
+&lt;<span style=color:#f92672>script</span>&gt;
+  <span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>reactive</span> } <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;vue&#34;</span>;
+  <span style=color:#66d9ef>import</span> <span style=color:#a6e22e>axios</span> <span style=color:#a6e22e>from</span> <span style=color:#e6db74>&#34;axios&#34;</span>;
+
+  <span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+    <span style=color:#a6e22e>setup</span>() {
+      <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>data</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>reactive</span>({
+        <span style=color:#a6e22e>city</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;&#34;</span>,
+        <span style=color:#a6e22e>weather</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>null</span>,
+      });
+
+      <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>apiUrl</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;http://api.openweathermap.org/data/2.5/weather&#34;</span>;
+      <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>apiKey</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;e8e8e8e8e8e8e8e8e8e8e8e8e8&#34;</span>;
+
+      <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>getWeather</span> <span style=color:#f92672>=</span> () =&gt; {
+        <span style=color:#a6e22e>axios</span>(<span style=color:#e6db74>`</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>apiUrl</span><span style=color:#e6db74>}</span><span style=color:#e6db74>?units=metric&amp;q={ data.city }&amp;appid=</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>apiKey</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>).<span style=color:#a6e22e>then</span>(
+          (<span style=color:#a6e22e>response</span>) =&gt; {
+            <span style=color:#a6e22e>data</span>.<span style=color:#a6e22e>weather</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>data</span>;
+          }
+        );
+      };
+
+      <span style=color:#66d9ef>return</span> {
+        <span style=color:#a6e22e>data</span>,
+        <span style=color:#a6e22e>getWeather</span>,
+      };
+    },
+  };
+&lt;/<span style=color:#f92672>script</span>&gt;
+</code></pre></div><p>With this, app users can grab your API key from the network section of the Chrome&rsquo;s developer tools, or directly from the page source code. This will cost you dearly in certain situation. So, we setup a Node.js and Express back end so the API key isn&rsquo;t exposed to the end user.</p><h2 id=back-end>Back end</h2><p>Front end, change <code>apiUrl</code> so that front end now sends request to backend and remove <code>appid</code> from the request.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>script</span>&gt;
+...
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>apiUrl</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;http://localhost:3000/&#34;</span>;
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>getWeather</span> <span style=color:#f92672>=</span> () =&gt; {
+    <span style=color:#a6e22e>axios</span>(<span style=color:#e6db74>`</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>apiUrl</span><span style=color:#e6db74>}</span><span style=color:#e6db74>?units=metric&amp;q={ data.city }`</span>).<span style=color:#a6e22e>then</span>((<span style=color:#a6e22e>response</span>) =&gt; {
+      <span style=color:#a6e22e>data</span>.<span style=color:#a6e22e>weather</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>data</span>;
+    });
+  };
+&lt;/<span style=color:#f92672>script</span>&gt;
+</code></pre></div><p><code>index.js</code> Express back end</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>express</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#34;express&#34;</span>);
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>app</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>express</span>();
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>port</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>3000</span>;
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>qs</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#34;qs&#34;</span>);
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>axios</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#34;axios&#34;</span>);
+
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>apiUrl</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;http://api.openweathermap.org/data/2.5/weather&#34;</span>;
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>apiKey</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;e8e8e8e8e8e8e8e8e8e8e8e8e8&#34;</span>;
+
+<span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#34;/&#34;</span>, (<span style=color:#a6e22e>request</span>, <span style=color:#a6e22e>response</span>) =&gt; {
+  <span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>set</span>(<span style=color:#e6db74>&#34;Access-Control-Allow-Origin&#34;</span>, <span style=color:#e6db74>&#34;*&#34;</span>);
+  <span style=color:#a6e22e>query</span>.<span style=color:#a6e22e>appid</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>apiKey</span>;
+  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>queryString</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>qs</span>.<span style=color:#a6e22e>stringnify</span>(<span style=color:#a6e22e>query</span>);
+  <span style=color:#a6e22e>axios</span>(<span style=color:#e6db74>`</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>apiUrl</span><span style=color:#e6db74>}</span><span style=color:#e6db74>?</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>queryString</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>).<span style=color:#a6e22e>then</span>((<span style=color:#a6e22e>res</span>) =&gt; {
+    <span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>send</span>(<span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>data</span>);
+  });
+});
+
+<span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>listen</span>(<span style=color:#a6e22e>port</span>, () =&gt; {
+  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>`Example app listening at http://localhost:</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>port</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>);
+});
+</code></pre></div><p>We move <code>apiUrl</code> and <code>apiKey</code> to the back end. When the front end make the request it will send the query with value <code>{units: 'metric', q: 'Hamburg'}</code> to the back end. We then append the <code>apiKey</code> to the query and use <code>qs</code> to stringify all the parameters. Finally, we use <code>axios</code> to send the full request to <code>openweathermap</code> to retrieve the weather data.</p><blockquote><p>Note: you need to set <code>Access-Control-Allow-Origin</code> in order to make the response accessible to the front end.</p></blockquote><h2 id=env-file>env file</h2><p>The final step is to store the API key in a <code>.env</code> file. We are going to use <code>dotenv</code> module that loads environment variables from a <code>.env</code> file into <code>process.env</code>.</p><p>Install <code>dotenv</code></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>npm install dotenv
+</code></pre></div><p>Create a <code>.env</code> file with <code>API_KEY=e8e8e8e8e8e8e8e8e8e8e8e8e8e8e8e8</code>. Update <code>index.js</code> file</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;dotenv&#39;</span>).<span style=color:#a6e22e>config</span>()
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>express</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;express&#39;</span>)
+...
+<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>apiKey</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>process</span>.<span style=color:#a6e22e>env</span>.<span style=color:#a6e22e>API_KEY</span>
+</code></pre></div><p>If you want to share your app in a git repo, you can create a <code>.gitignore</code> file for <code>.env</code>. Create a <code>.env.sample</code> file that contains the structure and instructions for other developers to config the API key.</p></div></div></main><footer class=bottom><small>Copyright 2021 Nguyen Viet Cuong</small></footer></section></body></html>
