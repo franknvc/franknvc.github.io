@@ -576,6 +576,10 @@ figure {
   }
 }
 
+td, th {
+  border: 1px solid white;
+}
+
 /* CSS for timeline */
 
 .timeline {
