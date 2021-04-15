@@ -1,0 +1,86 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Frank's Redily</title><link rel=stylesheet href=/css/style.css></head><body class=terminal><section class=window><header class=window-header><div class="logo terminal-prompt"><a href=https://franknvc.github.io/ class=no-style>Frank's Redily</a>
+<span style=color:blue>:~#</span>
+<a href=https://franknvc.github.io/posts>posts</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/vue>vue</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/vue/10-minutes-todos>10-minutes-todos</a><span style=color:#1a95e0>/</span></div><div class=window-controls><span class="control-item control-minimize">‒</span>
+<span class="control-item control-maximize">□</span>
+<span class="control-item control-close">˟</span></div></header><main class=window-content id=content><div class=container><div class=window-cursor><span class=i-cursor-indicator>></span><div class=terminal-nav><nav class=terminal-menu><ul vocab="https://schema.org/" typeof="BreadcrumbList"><li><a href=/about typeof="ListItem">/about</a></li><li><a href=/posts typeof="ListItem">/posts</a></li><li><a href=/projects typeof="ListItem">/projects</a></li><li><a href=/gallery typeof="ListItem">/photos</a></li><li><a href=/resume typeof="ListItem">/resumé</a></li></ul></nav></div><span class=i-cursor-underscore></span></div><div class=scrollable><h1>[Vue] Basic 10-minute Todos app</h1>Apr. 15, 2021<br><br><p>The Todos app will have three functionalities: delete todo item, add new todo, and clear all todo. All the code will be written in the <code>App.vue</code> file.</p><h2 id=display-todos>Display Todos</h2><p>First we are going to display Todo items using dummy data.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>template</span>&gt;
+  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text-2xl&#34;</span>&gt;🚀 Todo App 🚀&lt;/<span style=color:#f92672>div</span>&gt;
+  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>v-for</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;todo in todos&#34;</span> <span style=color:#a6e22e>v-bind:key</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;todo.id&#34;</span>&gt;{{ todo.text }}&lt;/<span style=color:#f92672>div</span>&gt;
+&lt;/<span style=color:#f92672>template</span>&gt;
+
+&lt;<span style=color:#f92672>script</span>&gt;
+  <span style=color:#66d9ef>export</span> <span style=color:#66d9ef>default</span> {
+    <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;App&#34;</span>,
+    <span style=color:#a6e22e>data</span>() {
+      <span style=color:#66d9ef>return</span> {
+        <span style=color:#a6e22e>todos</span><span style=color:#f92672>:</span> [
+          {
+            <span style=color:#a6e22e>id</span><span style=color:#f92672>:</span> Math.<span style=color:#a6e22e>random</span>(),
+            <span style=color:#a6e22e>text</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;hello&#34;</span>,
+          },
+          {
+            <span style=color:#a6e22e>id</span><span style=color:#f92672>:</span> Math.<span style=color:#a6e22e>random</span>(),
+            <span style=color:#a6e22e>text</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;world&#34;</span>,
+          },
+        ],
+      };
+    },
+  };
+&lt;/<span style=color:#f92672>script</span>&gt;
+</code></pre></div><p>Let&rsquo;s go through the code. First, we are going to create the <code>data()</code> object that contains the <code>todos</code> list. We populate the <code>todos</code> list with two Todo items as shown. Then we display the items by using <code>v-for</code> to iterate through the list and display the items.</p><h2 id=remove-todo-item>Remove Todo item</h2><p>Next, we add the <code>removeTodo()</code> functionality.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>template</span>&gt;
+  ... {{ todo.text }}
+  &lt;<span style=color:#f92672>button</span> <span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>click</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;removeTodo(todo.id)&#34;</span>&gt;❌&lt;/<span style=color:#f92672>button</span>&gt;
+&lt;/<span style=color:#f92672>template</span>&gt;
+
+&lt;<span style=color:#f92672>script</span>&gt;
+  ...
+      <span style=color:#a6e22e>methods</span><span style=color:#f92672>:</span> {
+          <span style=color:#a6e22e>removeTodo</span>(<span style=color:#a6e22e>todoId</span>) {
+              <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>todos</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>todos</span>.<span style=color:#a6e22e>filter</span>(<span style=color:#a6e22e>todo</span> =&gt; <span style=color:#a6e22e>todo</span>.<span style=color:#a6e22e>id</span> <span style=color:#f92672>!===</span> <span style=color:#a6e22e>todoId</span>);
+          }
+      }
+&lt;/<span style=color:#f92672>script</span>&gt;
+</code></pre></div><p>We add the remove button to the template and listen to the event on <code>@click</code>. When the button is clicked on, it will trigger the function <code>removeTodo()</code>. This function will take in the <code>id</code> of the todo item, and filter the <code>todos</code> list with items that are not equal to the <code>id</code> of the removed item.</p><h2 id=add-new-todo>Add new Todo</h2><p>Add an input textfield and another button to the template.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>template</span>&gt;
+  ...
+  &lt;<span style=color:#f92672>div</span>&gt;
+    &lt;<span style=color:#f92672>input</span> <span style=color:#a6e22e>type</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text&#34;</span> <span style=color:#a6e22e>v-model</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;todo&#34;</span> <span style=color:#a6e22e>placeholder</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;add todo...&#34;</span> /&gt;
+    &lt;<span style=color:#f92672>button</span> <span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>click</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;addTodo()&#34;</span>&gt;Add&lt;/<span style=color:#f92672>button</span>&gt;
+  &lt;/<span style=color:#f92672>div</span>&gt;
+&lt;/<span style=color:#f92672>template</span>&gt;
+
+&lt;<span style=color:#f92672>script</span>&gt;
+  ...
+  <span style=color:#a6e22e>methods</span><span style=color:#f92672>:</span> {
+      <span style=color:#a6e22e>removeTodo</span>(<span style=color:#a6e22e>todoId</span>) {
+          ...
+      },
+      <span style=color:#a6e22e>addTodo</span>() {
+          <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>todo</span>.<span style=color:#a6e22e>length</span> <span style=color:#f92672>===</span> <span style=color:#ae81ff>0</span>) {
+              <span style=color:#66d9ef>return</span>;
+          }
+          <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>todos</span>.<span style=color:#a6e22e>push</span>({
+              <span style=color:#a6e22e>id</span><span style=color:#f92672>:</span> Math.<span style=color:#a6e22e>random</span>(),
+              <span style=color:#a6e22e>text</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>todo</span>
+          })
+      }
+  }
+&lt;/<span style=color:#f92672>script</span>&gt;
+</code></pre></div><p>Similar to <code>removeTodo()</code>, we add a new method <code>addTodo()</code> that is triggered when the button <code>add</code> is clicked on. Noted that we need to bind the value of the input textfield to <code>todo</code> using <code>v-model</code>. <code>v-model</code> can be used to create two-way data bindings on form input, textarea, and select elements. We also add a quick check for empty <code>todo</code> item and only add the item when it&rsquo;s not empty. Item is added by pusing the new element to the <code>todos</code> list.</p><h2 id=clear-all-todos>Clear all Todos</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>template</span>&gt;
+  ...
+  &lt;<span style=color:#f92672>div</span>&gt;
+    &lt;<span style=color:#f92672>button</span> <span style=color:#960050;background-color:#1e0010>...</span>&gt;add&lt;/<span style=color:#f92672>button</span>&gt;
+    &lt;<span style=color:#f92672>button</span> <span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>click</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;clearAllTodos()&#34;</span>&gt;clear&lt;/<span style=color:#f92672>button</span>&gt;
+  &lt;/<span style=color:#f92672>div</span>&gt;
+&lt;/<span style=color:#f92672>template</span>&gt;
+
+&lt;<span style=color:#f92672>script</span>&gt;
+  ...
+  <span style=color:#a6e22e>methods</span><span style=color:#f92672>:</span> {
+      ...
+      <span style=color:#a6e22e>clearAllTodos</span>() {
+          <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>todos</span> <span style=color:#f92672>=</span> [];
+      }
+  }
+&lt;/<span style=color:#f92672>script</span>&gt;
+</code></pre></div><p><code>clearAllTodos</code> is the simplest method. All you need to do is change <code>todos</code> to an empty list.</p></div></div></main><footer class=bottom><small>Copyright 2021 Nguyen Viet Cuong</small></footer></section></body></html>
