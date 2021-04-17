@@ -42,12 +42,16 @@
   --page-width: 70vw;
   --display-h1-decoration: 1;
   --primary-color: #1a95e0;
-  --secondary-color: green;
+  --secondary-color: 	#7FFF00;
   --error-color: #d20962;
   --progress-bar-background: #727578;
   --progress-bar-fill: #151515;
   /* --code-bg-color: black; */
   --input-style: solid;
+  --h1-font-color: #FF0000;
+  --h2-font-color: #FFFF00;
+  --h3-font-color: #40E0D0;
+  --code-font-color:  #7FFF00;
 }
 
 * {
@@ -121,6 +125,8 @@ ul {
 .logo,
 blockquote,
 h1,
+h2,
+h3,
 ol,
 p,
 ul {
@@ -141,7 +147,7 @@ ul {
   font-size: var(--global-font-size);
   font-style: normal;
   font-family: var(--font-stack);
-  color: var(--font-color);
+  color: var(--global-font-color);
 }
 
 h1,
@@ -168,29 +174,42 @@ h1 {
   overflow: hidden;
   font-weight: 600;
   float: none;
+  font-size: 1.45rem !important;
 }
 
 h1 {
   margin-bottom: 200px;
+  color: var(--h1-font-color) !important;
 }
 
 h1::after {
   content: "====================================================================================================";
   position: absolute;
-  bottom: 5px;
+  bottom: 6px;
   left: 0;
   display: var(--display-h1-decoration);
   color: #fff;
 }
 
+h2 {
+  color: var(--h2-font-color) !important;
+  font-size: 1.25rem !important;
+}
+
+h3 {
+  color: var(--h3-font-color) !important;
+  font-size: 1.15rem !important;
+}
+
 code {
   font-weight: inherit;
-  /* background-color: black; */
+  background-color: black;
   font-family: var(--mono-font-stack);
+  color: var(--code-font-color) !important;
 }
 code::after,
 code::before {
-  content: "`";
+  /* content: "`"; */
   display: inline;
 }
 pre code::after,
@@ -343,7 +362,7 @@ hr {
 
 .window {
   /* max-width: var(--page-width); */
-  height: 95vh;
+  height: 93vh;
   background-color: rgba(37, 37, 37, 0.95);
   border: 1px solid #c9c9c9;
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
@@ -761,10 +780,6 @@ th {
 }
 
 /* About */
-code {
-  background-color: black;
-}
-
 .card {
   background: #f1f1f1;
   height: 100%;
@@ -809,6 +824,10 @@ code {
   font-weight: bold;
 }
 
+.table-profile td {
+  padding-left: 30px;
+}
+
 .skills-content .media {
   margin: 0 !important;
   padding: 1px !important;
@@ -827,4 +846,8 @@ code {
 
 .media-content .content{
   font-size: large;
+}
+
+.media p strong {
+  color: black !important;
 }
