@@ -1,0 +1,120 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Frank's Redily</title><link rel=stylesheet href=/css/bulma.min.css><link rel=stylesheet href=/css/style.css></head><body class=terminal><section class=window><header class=window-header><div class="logo terminal-prompt"><a href=https://franknvc.github.io/ class=no-style>Frank's Redily</a>
+<span style=color:blue>:~#</span>
+<a href=https://franknvc.github.io/posts>posts</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/python>python</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/python/fun-series>fun-series</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/python/fun-series/fun-2>fun-2</a><span style=color:#1a95e0>/</span></div><div class=window-controls><span class="control-item control-minimize">‒</span>
+<span class="control-item control-maximize">□</span>
+<span class="control-item control-close">˟</span></div></header><main class=window-content id=content><div class=container><div class=window-cursor><span class=i-cursor-indicator>></span><div class=terminal-nav><nav class=terminal-menu><ul vocab="https://schema.org/" typeof="BreadcrumbList"><li><a href=/about typeof="ListItem">/about</a></li><li><a href=/posts typeof="ListItem">/posts</a></li><li><a href=/projects typeof="ListItem">/projects</a></li><li><a href=/gallery typeof="ListItem">/photos</a></li><li><a href=/resume typeof="ListItem">/resumé</a></li></ul></nav></div><span class=i-cursor-underscore></span></div><div class=scrollable><h1>Fun 2 - [Python] Pong in Pygame</h1>Apr. 4, 2021<br><br><p><img src=/posts/python/fun-series/images/pong.gif alt=Pong></p><p>To continue from the game theme from the last post, we are going to create the classic <code>Pong</code> game using the <code>PyGame</code> module. PyGame is designed for writing video games. Therefore it has functiontality to support concepts and operations in game such as rendering, object boundaries, collisions, etc&mldr; PyGame is free and you can install it using the <code>pip</code> command.</p><h2 id=requirements>Requirements</h2><p>Once again we start with requirements. In a Pong game, there are two players that protect their side of the table with a paddle. A score is given to the opponent if the ball goes pass the boundaries of the table. The game restarts with the ball in the middle. From the snapshot above, we could see that for the user interface we need:</p><ul><li>a surface to act as the table</li><li>two paddles, one represents the user, one represents the opponent</li><li>a ball</li><li>scoring</li></ul><p>And for the functionality:</p><ul><li>the ball animation, including collision detection</li><li>paddle movement, one controlled by user input, the other by the program</li><li>update scoring and restart game</li></ul><h2 id=implementation>Implementation</h2><p>One question that I used to ask myself in the earlier day is that, &ldquo;which should I design and implement first, the front-end / ui or the back-end / business logic&rdquo;. Well, you may already know the answer, it depends.</p><p>From my own experience, it is better to start implementing the UI if your program is something simple enough, or maybe along the line of you need a prototype since you don&rsquo;t have a good grasp of what functionality you need. You can start with the UI in order to help you get a better image of how you want the component to behave and then tie in the functionality later. This is what we are going to do.</p><p>On the other hand, if you have something more complex, start with laying out the design, think hard about the architecture, set up the basic back-end skeleton and components. This approach will be more time consuming but more organized and structurely more rigid than the front-end first approach.</p><h3 id=creating-the-window>Creating the window</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># General setup</span>
+pygame<span style=color:#f92672>.</span>init()
+
+<span style=color:#75715e># Setting up the main window</span>
+screen_width <span style=color:#f92672>=</span> <span style=color:#ae81ff>848</span>
+screen_height <span style=color:#f92672>=</span> <span style=color:#ae81ff>565</span>
+screen <span style=color:#f92672>=</span> pygame<span style=color:#f92672>.</span>display<span style=color:#f92672>.</span>set_mode((screen_width, screen_height))
+pygame<span style=color:#f92672>.</span>display<span style=color:#f92672>.</span>set_caption(<span style=color:#e6db74>&#39;Pong&#39;</span>)
+
+<span style=color:#75715e># Game Rectangles</span>
+ball <span style=color:#f92672>=</span> pygame<span style=color:#f92672>.</span>Rect(screen_width <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>15</span>, screen_height <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>15</span>, <span style=color:#ae81ff>30</span>, <span style=color:#ae81ff>30</span>)
+player <span style=color:#f92672>=</span> pygame<span style=color:#f92672>.</span>Rect(screen_width <span style=color:#f92672>-</span> <span style=color:#ae81ff>20</span>, screen_height <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>70</span>, <span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>140</span>)
+opponent <span style=color:#f92672>=</span> pygame<span style=color:#f92672>.</span>Rect(<span style=color:#ae81ff>10</span>, screen_height <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>70</span>, <span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>140</span>)
+
+<span style=color:#75715e># Colors</span>
+bg_color <span style=color:#f92672>=</span> pygame<span style=color:#f92672>.</span>Color(<span style=color:#e6db74>&#39;grey12&#39;</span>)
+light_gray <span style=color:#f92672>=</span> (<span style=color:#ae81ff>200</span>, <span style=color:#ae81ff>200</span>, <span style=color:#ae81ff>200</span>)
+
+<span style=color:#75715e># Game Variables</span>
+ball_speed_x <span style=color:#f92672>=</span> <span style=color:#ae81ff>7</span> <span style=color:#f92672>*</span> random<span style=color:#f92672>.</span>choice((<span style=color:#ae81ff>1</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>))
+ball_speed_y <span style=color:#f92672>=</span> <span style=color:#ae81ff>7</span> <span style=color:#f92672>*</span> random<span style=color:#f92672>.</span>choice((<span style=color:#ae81ff>1</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>))
+player_speed <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+opponent_speed <span style=color:#f92672>=</span> <span style=color:#ae81ff>7</span>
+
+<span style=color:#75715e># Text Variables</span>
+player_score <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+opponent_score <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+game_font <span style=color:#f92672>=</span> pygame<span style=color:#f92672>.</span>font<span style=color:#f92672>.</span>Font(<span style=color:#e6db74>&#39;FreeSansBold.ttf&#39;</span>, <span style=color:#ae81ff>24</span>)
+</code></pre></div><p>I have divided up the code into sections. We need to initialize pygame, then creating the window using <code>pygame.display</code> with the predefined <code>screen_height</code> and <code>screen_width</code>. We are going to use <code>Rect</code> to make our ball and paddles. This will create objects with a rectangle boundaries that can be used for collision detection.</p><p>Then we need variables to contain the speed of each object. Since the ball can move in four directions (up, down, left, right), we need two variables for speeds along both the horizontal and vertical axes.</p><p>Lastly, we need a variable for the score each, and the game font. This is only the declaration and initialization of these variables.</p><h3 id=creating-the-game-loop>Creating the game loop</h3><p>In order for them to show up on the screen, we also need to render them inside the game loop:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>while</span> True:
+    <span style=color:#75715e># Visuals</span>
+    screen<span style=color:#f92672>.</span>fill(bg_color)
+    pygame<span style=color:#f92672>.</span>draw<span style=color:#f92672>.</span>rect(screen, light_gray, player)
+    pygame<span style=color:#f92672>.</span>draw<span style=color:#f92672>.</span>rect(screen, light_gray, opponent)
+    pygame<span style=color:#f92672>.</span>draw<span style=color:#f92672>.</span>ellipse(screen, light_gray, ball)
+    pygame<span style=color:#f92672>.</span>draw<span style=color:#f92672>.</span>aaline(screen, light_gray, (screen_width <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>0</span>), (screen_width <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>, screen_height))
+
+    player_text <span style=color:#f92672>=</span> game_font<span style=color:#f92672>.</span>render(f<span style=color:#e6db74>&#34;{player_score}&#34;</span>, False, light_gray)
+    opponent_text <span style=color:#f92672>=</span> game_font<span style=color:#f92672>.</span>render(f<span style=color:#e6db74>&#34;{opponent_score}&#34;</span>, False, light_gray)
+    screen<span style=color:#f92672>.</span>blit(player_text, (screen_width <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>20</span>, screen_height <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>3</span>))
+    screen<span style=color:#f92672>.</span>blit(opponent_text, (screen_width <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>30</span>, screen_height <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>3</span>))
+
+    <span style=color:#75715e># Updating the window</span>
+    pygame<span style=color:#f92672>.</span>display<span style=color:#f92672>.</span>flip()
+    clock<span style=color:#f92672>.</span>tick(<span style=color:#ae81ff>60</span>)
+</code></pre></div><p>Now, we can start adding functionality to the ball and the paddles.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>ball_animation</span>():
+    <span style=color:#66d9ef>global</span> ball_speed_x, ball_speed_y, player_score, opponent_score, score_time
+
+    ball<span style=color:#f92672>.</span>x <span style=color:#f92672>+=</span> ball_speed_x
+    ball<span style=color:#f92672>.</span>y <span style=color:#f92672>+=</span> ball_speed_y
+
+    <span style=color:#66d9ef>if</span> ball<span style=color:#f92672>.</span>top <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>or</span> ball<span style=color:#f92672>.</span>bottom <span style=color:#f92672>&gt;=</span> screen_height:
+        ball_speed_y <span style=color:#f92672>*=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
+    <span style=color:#66d9ef>elif</span> ball<span style=color:#f92672>.</span>left <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>10</span>:
+        player_score <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+        ball_start()
+    <span style=color:#66d9ef>elif</span> ball<span style=color:#f92672>.</span>right <span style=color:#f92672>&gt;=</span> screen_width <span style=color:#f92672>-</span> <span style=color:#ae81ff>10</span>:
+        opponent_score <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+        ball_start()
+    <span style=color:#66d9ef>else</span>:
+        ball_speed_x <span style=color:#f92672>*=</span> <span style=color:#ae81ff>1</span>
+</code></pre></div><p>In the code above, we change the position of the ball by updating its x and y coordinate. We also check for collisions. There are 4 cases of collision in total:</p><ul><li>The ball collides with the top and bottom of the screen: change y direction</li><li>The ball collides with the left and right of the screen: round ends, increment the score, and restart game</li><li>The ball collides with the paddles: change x direction</li></ul><p>We implement similarly for the <code>player_animation()</code> and <code>opponent_animation()</code>, updating y coordinate according to the speed, and check for top and bottom collisions.</p><p>Next, we need to listen for user input. We call these events. Events are registered by PyGame and there are many types of events. We are listening to the event <code>QUIT</code> for when we close the window, and the event <code>KEYDOWN</code> for everytime we pressed the arrow keys on the keyboard. The keyboard inputs also change the <code>player_speed</code> that change the player position in <code>player_animation()</code>.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>    <span style=color:#75715e># Handling input</span>
+    <span style=color:#66d9ef>for</span> event <span style=color:#f92672>in</span> pygame<span style=color:#f92672>.</span>event<span style=color:#f92672>.</span>get():
+        <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>type <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>QUIT:
+            pygame<span style=color:#f92672>.</span>quit()
+            sys<span style=color:#f92672>.</span>exit()
+        <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>type <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>KEYDOWN:
+            <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>key <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>K_DOWN:
+                player_speed <span style=color:#f92672>+=</span> <span style=color:#ae81ff>7</span>
+            <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>key <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>K_UP:
+                player_speed <span style=color:#f92672>-=</span> <span style=color:#ae81ff>7</span>
+        <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>type <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>KEYUP:
+            <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>key <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>K_DOWN:
+                player_speed <span style=color:#f92672>-=</span> <span style=color:#ae81ff>7</span>
+            <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>key <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>K_UP:
+                player_speed <span style=color:#f92672>+=</span> <span style=color:#ae81ff>7</span>
+</code></pre></div><p>Putting together the game loop, we have the basic Pong game completed.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>while</span> True:
+    <span style=color:#75715e># Handling input</span>
+    <span style=color:#66d9ef>for</span> event <span style=color:#f92672>in</span> pygame<span style=color:#f92672>.</span>event<span style=color:#f92672>.</span>get():
+        <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>type <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>QUIT:
+            pygame<span style=color:#f92672>.</span>quit()
+            sys<span style=color:#f92672>.</span>exit()
+        <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>type <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>KEYDOWN:
+            <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>key <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>K_DOWN:
+                player_speed <span style=color:#f92672>+=</span> <span style=color:#ae81ff>7</span>
+            <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>key <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>K_UP:
+                player_speed <span style=color:#f92672>-=</span> <span style=color:#ae81ff>7</span>
+        <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>type <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>KEYUP:
+            <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>key <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>K_DOWN:
+                player_speed <span style=color:#f92672>-=</span> <span style=color:#ae81ff>7</span>
+            <span style=color:#66d9ef>if</span> event<span style=color:#f92672>.</span>key <span style=color:#f92672>==</span> pygame<span style=color:#f92672>.</span>K_UP:
+                player_speed <span style=color:#f92672>+=</span> <span style=color:#ae81ff>7</span>
+
+    <span style=color:#75715e># Game Logic</span>
+    player_animation()
+    opponent_ai()
+    ball_animation()
+
+    <span style=color:#75715e># Visuals</span>
+    screen<span style=color:#f92672>.</span>fill(bg_color)
+    pygame<span style=color:#f92672>.</span>draw<span style=color:#f92672>.</span>rect(screen, light_gray, player)
+    pygame<span style=color:#f92672>.</span>draw<span style=color:#f92672>.</span>rect(screen, light_gray, opponent)
+    pygame<span style=color:#f92672>.</span>draw<span style=color:#f92672>.</span>ellipse(screen, light_gray, ball)
+    pygame<span style=color:#f92672>.</span>draw<span style=color:#f92672>.</span>aaline(screen, light_gray, (screen_width <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>0</span>), (screen_width <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>, screen_height))
+
+    player_text <span style=color:#f92672>=</span> game_font<span style=color:#f92672>.</span>render(f<span style=color:#e6db74>&#34;{player_score}&#34;</span>, False, light_gray)
+    opponent_text <span style=color:#f92672>=</span> game_font<span style=color:#f92672>.</span>render(f<span style=color:#e6db74>&#34;{opponent_score}&#34;</span>, False, light_gray)
+    screen<span style=color:#f92672>.</span>blit(player_text, (screen_width <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>20</span>, screen_height <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>3</span>))
+    screen<span style=color:#f92672>.</span>blit(opponent_text, (screen_width <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>30</span>, screen_height <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>3</span>))
+
+    <span style=color:#75715e># Updating the window</span>
+    pygame<span style=color:#f92672>.</span>display<span style=color:#f92672>.</span>flip()
+    clock<span style=color:#f92672>.</span>tick(<span style=color:#ae81ff>60</span>)
+</code></pre></div><p>However, in order to have something similar to the snapshot, you need the following feature:</p><ul><li>To change the y direction of the ball to the moving direction of the paddles: this requires you to know in which direction the paddles are moving, up or down</li><li>To have the countdown instead of just restarting the game immediately: in the <code>ball_start()</code> method, you need a timer and print out the countdown</li></ul><h2 id=discussion>Discussion</h2><p>If you take a look at the full code, you could see that it is pretty messy, especially with all the global variables lying around.</p><p>You can take this code and try to refector it or improve it.</p><p>One way that we can clean up the code is to create classes. This way we don&rsquo;t have to put global everywhere. However, we should also consider if it worths the effort.</p><p>We all want clean, organized, and beautiful code. But in reality, we always need to consider, &ldquo;At what cost?&rdquo;. And you may guess correctly, it is another question whose answer can only come from your own experience. If we take this Pong game as an example, it may takes you 45-60 minutes to finish writing the code and everything run correctly. If we are going to introduce classes, and organize the code, it may take 2 hours. Then we also need to realize that this is supposed to be a fun little project, is there benefit we can get in the long run by doing the right way or is it okay to leave it messy but running?</p><p><a href=/posts/python/fun-series/codes/pong.py>Code</a></p></div></div></main><footer class=bottom><small>Copyright 2021 Nguyen Viet Cuong</small></footer></section></body></html>

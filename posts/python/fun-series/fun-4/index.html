@@ -1,0 +1,116 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Frank's Redily</title><link rel=stylesheet href=/css/bulma.min.css><link rel=stylesheet href=/css/style.css></head><body class=terminal><section class=window><header class=window-header><div class="logo terminal-prompt"><a href=https://franknvc.github.io/ class=no-style>Frank's Redily</a>
+<span style=color:blue>:~#</span>
+<a href=https://franknvc.github.io/posts>posts</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/python>python</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/python/fun-series>fun-series</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/python/fun-series/fun-4>fun-4</a><span style=color:#1a95e0>/</span></div><div class=window-controls><span class="control-item control-minimize">‒</span>
+<span class="control-item control-maximize">□</span>
+<span class="control-item control-close">˟</span></div></header><main class=window-content id=content><div class=container><div class=window-cursor><span class=i-cursor-indicator>></span><div class=terminal-nav><nav class=terminal-menu><ul vocab="https://schema.org/" typeof="BreadcrumbList"><li><a href=/about typeof="ListItem">/about</a></li><li><a href=/posts typeof="ListItem">/posts</a></li><li><a href=/projects typeof="ListItem">/projects</a></li><li><a href=/gallery typeof="ListItem">/photos</a></li><li><a href=/resume typeof="ListItem">/resumé</a></li></ul></nav></div><span class=i-cursor-underscore></span></div><div class=scrollable><h1>Fun 4 - [Python] Maze Solver</h1>Apr. 14, 2021<br><br><p>In this post, we are going to acquainted ourselves with one of the search algorithm in order to solve a 2D Maze.</p><h2 id=requirements>Requirements</h2><p>We are going to build a graphical representation of a 2D maze that contains walls, a start point and and endpoint. The layout of the maze is given as an array of string.</p><ul><li>Read the layout and display the maze using <code>turtle</code></li><li>Using Breadth First Search in order to navigate a path from the start point to the endpoint</li><li>Animate the search process and highlight the solution path</li></ul><h2 id=implementation>Implementation</h2><h3 id=draw-the-maze>Draw the maze</h3><p><img src=/posts/python/fun-series/images/draw_maze.gif alt="Draw Maze"></p><p>The first step is to read from the given maze layout and output the graphical representation using <code>turtle</code>. The maze layout is given below:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>maze <span style=color:#f92672>=</span> [
+    <span style=color:#e6db74>&#34;+++++++++++++++++++++++++++++++++++++++++++++++++++&#34;</span>,
+    <span style=color:#e6db74>&#34;+               +                                 +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  ++++++++++  +++++++++++++  +++++++  ++++++++++++&#34;</span>,
+    <span style=color:#e6db74>&#34;+s          +                 +               ++  +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +++++++  +++++++++++++  +++++++++++++++++++++  +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +     +  +           +  +                 +++  +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +  +  +  +  +  ++++  +  +  +++++++++++++  +++  +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +  +  +  +  +  +        +  +  +        +       +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +  ++++  +  ++++++++++  +  +  ++++  +  +  ++   +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +     +  +          +   +           +  +  ++  ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+  ++++  +  +++++++ ++++++++  +++++++++++++  ++  ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+     +  +     +              +              ++   +&#34;</span>,
+    <span style=color:#e6db74>&#34;++++  +  ++++++++++ +++++++++++  ++++++++++  +++  +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +  +                    +     +     +  +  +++  +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +  ++++  +++++++++++++  +  ++++  +  +  +  ++   +&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +  +     +     +     +  +  +     +     +  ++  ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+  +  +  +++++++  ++++  +  +  +  ++++++++++  ++  ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+                       +  +  +              ++  ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+ ++++++             +  +  +  +  +++        +++  ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+ ++++++ ++++++ +++++++++    ++ ++   ++++++++++  ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+ +    +    +++ +     +++++++++ ++  +++++++    + ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+ ++++ ++++ +++ + +++ +++    ++    ++    ++ ++ + ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+ ++++    +     + +++ +++ ++ ++++++++ ++ ++ ++   ++&#34;</span>,
+    <span style=color:#e6db74>&#34;+      ++ +++++++e+++     ++          ++    +++++++&#34;</span>,
+    <span style=color:#e6db74>&#34;+++++++++++++++++++++++++++++++++++++++++++++++++++&#34;</span>,
+]
+</code></pre></div><p>This kind of presentation is usually used for map layout in simple 2D games. As you can see here, the walls are indicated with the <code>+</code> character, the starting point with <code>s</code>, the endpoint with <code>e</code>. Empty spaces are the traveling path.</p><p>We are going to draw a square block as the graphical representation of each element of the maze. The walls will have white color, red for the starting point, purple for the endpoint. We also need a method to draw the block. For this we are going to create a <code>Block</code> class that is a subclass of the <code>turtle.Turtle</code> class and then initialize a <code>Block</code> object.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Block</span>(turtle<span style=color:#f92672>.</span>Turtle):
+    <span style=color:#66d9ef>def</span> __init__(self):
+        turtle<span style=color:#f92672>.</span>Turtle<span style=color:#f92672>.</span>__init__(self)
+        self<span style=color:#f92672>.</span>shape(<span style=color:#e6db74>&#34;square&#34;</span>)
+        self<span style=color:#f92672>.</span>color(<span style=color:#e6db74>&#34;white&#34;</span>)
+        self<span style=color:#f92672>.</span>penup()
+        self<span style=color:#f92672>.</span>speed(<span style=color:#ae81ff>0</span>)
+
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>draw_block</span>(self, x, y):
+        self<span style=color:#f92672>.</span>goto(x, y)
+        self<span style=color:#f92672>.</span>stamp()
+
+
+block <span style=color:#f92672>=</span> Block()
+</code></pre></div><p>The next step is to read the maze layout. We consider this array of string as a 2-dimensional array and iterate over each element in order to draw them. Notice that because we are translating the characters into graphical representation we need to have some kind of variables that store the corresponding graphic. For e.g., in <code>maze</code>, each element is just a character without the coordination x, y, size, or color. In the graphical representation, each block will have a <strong>size</strong> of <code>24</code>, its own <code>(x, y)</code> coordinates, and color.</p><p>Therefore, we create a 2-dimensional array <code>grid</code> that store the corresponding coordinate. <code>grid[0][0]</code> will have a value of <code>(x, y)</code> that corresponding to <code>maze[0][0]</code> that has a value of <code>+</code> for example.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>grid <span style=color:#f92672>=</span> [[]]
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>draw_maze</span>():
+    <span style=color:#66d9ef>global</span> start_x, start_y, end_x, end_y
+
+    <span style=color:#66d9ef>for</span> row <span style=color:#f92672>in</span> range(len(maze)):
+        <span style=color:#66d9ef>for</span> column <span style=color:#f92672>in</span> range(len(maze[row])):
+            character <span style=color:#f92672>=</span> maze[row][column]
+            cor_x <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>588</span> <span style=color:#f92672>+</span> (column <span style=color:#f92672>*</span> <span style=color:#ae81ff>24</span>)
+            cor_y <span style=color:#f92672>=</span> <span style=color:#ae81ff>288</span> <span style=color:#f92672>-</span> (row <span style=color:#f92672>*</span> <span style=color:#ae81ff>24</span>)
+
+            <span style=color:#66d9ef>if</span> character <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;+&#34;</span>:
+                block<span style=color:#f92672>.</span>color(<span style=color:#e6db74>&#34;white&#34;</span>)
+                block<span style=color:#f92672>.</span>draw_block(cor_x, cor_y)
+
+            <span style=color:#66d9ef>if</span> character <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;s&#34;</span>:
+                block<span style=color:#f92672>.</span>color(<span style=color:#e6db74>&#34;red&#34;</span>)
+                block<span style=color:#f92672>.</span>draw_block(cor_x, cor_y)
+                start_x, start_y <span style=color:#f92672>=</span> column, row
+
+            <span style=color:#66d9ef>if</span> character <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;e&#34;</span>:
+                block<span style=color:#f92672>.</span>color(<span style=color:#e6db74>&#34;purple&#34;</span>)
+                block<span style=color:#f92672>.</span>draw_block(cor_x, cor_y)
+                end_x, end_y <span style=color:#f92672>=</span> column, row
+
+            grid[row]<span style=color:#f92672>.</span>append((cor_x, cor_y))
+        grid<span style=color:#f92672>.</span>append([])
+
+
+draw_maze()
+</code></pre></div><p>We iterate ove the <code>maze</code> array with two <code>for</code> loop, calculate the <code>(x, y)</code> coordinate based on the window size and the block&rsquo;s size, then draw the block based on the calculated cordinates and character.</p><blockquote><p>Note: there are 2 important points. First is the initialization of the 2-dimensional array <code>grid</code> and how its elements are appended. Secondly, although we are iterating through the <code>maze</code> array by <code>[row,column]</code>, the <code>draw_block</code> method requires the coordinate to be <code>(column, row)</code>.</p></blockquote><h3 id=search-path-in-maze>Search path in maze</h3><p><img src=/posts/python/fun-series/images/search_maze.gif alt="Search Maze"></p><p>In order to search for the path from the starting point to endpoint, we are going to use Breadth First Search (BFS) algorithm. BFS is an algorithm that is commonly used to traverse a tree or a graph. The idea is that every time we are going to a square (node) in the maze, we are going to mark it as <code>visisted</code> and put it into a <code>queue</code>. Next, we are going to visit all the <code>neighbours</code> of this square in the order of <em>top</em>, <em>right</em>, <em>bottom</em>, <em>left</em> and pop it out of the queue. Then repeat the process for each <code>neighbour</code> until we exhaust all the available squares in the maze or until we reach the endpoint.</p><blockquote><p>Note that this layout is designed so that the algorithm will exhaust all the empty squares before reaching the endpoint. In other cases, you may reach the endpoint first without having to search the entire space.</p></blockquote><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>search_maze</span>():
+    visited<span style=color:#f92672>.</span>append((start_y, start_x))
+    queue<span style=color:#f92672>.</span>append((start_y, start_x))
+
+    <span style=color:#66d9ef>while</span> queue:
+        s <span style=color:#f92672>=</span> queue<span style=color:#f92672>.</span>pop(<span style=color:#ae81ff>0</span>)
+
+        neighbours <span style=color:#f92672>=</span> [(s[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>, s[<span style=color:#ae81ff>1</span>]),
+                      (s[<span style=color:#ae81ff>0</span>], s[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>),
+                      (s[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>, s[<span style=color:#ae81ff>1</span>]),
+                      (s[<span style=color:#ae81ff>0</span>], s[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>)]
+
+        <span style=color:#66d9ef>for</span> neighbour <span style=color:#f92672>in</span> neighbours:
+            <span style=color:#66d9ef>if</span> neighbour <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> visited:
+                <span style=color:#66d9ef>if</span> maze[neighbour[<span style=color:#ae81ff>0</span>]][neighbour[<span style=color:#ae81ff>1</span>]] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34; &#34;</span>:
+                    queue<span style=color:#f92672>.</span>append((neighbour[<span style=color:#ae81ff>0</span>], neighbour[<span style=color:#ae81ff>1</span>]))
+                    visited<span style=color:#f92672>.</span>append((neighbour[<span style=color:#ae81ff>0</span>], neighbour[<span style=color:#ae81ff>1</span>]))
+                    block<span style=color:#f92672>.</span>color(<span style=color:#e6db74>&#34;green&#34;</span>)
+                    block<span style=color:#f92672>.</span>draw_block(grid[neighbour[<span style=color:#ae81ff>0</span>]][neighbour[<span style=color:#ae81ff>1</span>]][<span style=color:#ae81ff>0</span>],
+                                     grid[neighbour[<span style=color:#ae81ff>0</span>]][neighbour[<span style=color:#ae81ff>1</span>]][<span style=color:#ae81ff>1</span>])
+                    solution[neighbour] <span style=color:#f92672>=</span> s
+                <span style=color:#66d9ef>if</span> maze[neighbour[<span style=color:#ae81ff>0</span>]][neighbour[<span style=color:#ae81ff>1</span>]] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;e&#34;</span>:
+                    block<span style=color:#f92672>.</span>color(<span style=color:#e6db74>&#34;yellow&#34;</span>)
+                    block<span style=color:#f92672>.</span>draw_block(grid[neighbour[<span style=color:#ae81ff>0</span>]][neighbour[<span style=color:#ae81ff>1</span>]][<span style=color:#ae81ff>0</span>],
+                                     grid[neighbour[<span style=color:#ae81ff>0</span>]][neighbour[<span style=color:#ae81ff>1</span>]][<span style=color:#ae81ff>1</span>])
+                    solution[neighbour] <span style=color:#f92672>=</span> s
+                    <span style=color:#66d9ef>break</span>
+</code></pre></div><p>Let&rsquo;s go through the code. First, we append the starting point&rsquo;s indexes into <code>visited</code> and <code>queue</code>. The <code>queue</code> will be storing the indexes of the next squares we are going to visit. Everytime a square is visited, it is popped out of <code>queue</code>. You can also use <code>deque</code> here.</p><p>For each square, we computed the indexes of its 4 neighbours in the order of <em>top</em>, <em>right</em>, <em>down</em>, <em>left</em>. We visit each neighbour, and if it is a new square that we haven&rsquo;t visited, we check if it is either still the path (empty space), or it is the endpoint (&ldquo;e&rdquo;). Since <code>neighbour</code> only store the indexes of the character in <code>maze</code>, for e.g. <code>(0, 0)</code>, we need to access the <code>maze</code>. Then we are going to draw the block <strong>green</strong> to animate the search process. We need to access <code>grid</code> for the <code>(x, y)</code> coordinates.</p><p>Finally, every time we find an available square that we can visit, we are going the save the indexes of the previous square for back tracking later. In the code above, we save the indexes to a dictionary for fast access. For example, <code>s</code> has indexes of <code>(0, 0)</code>, its neighbour at <code>(0, 1)</code> can be visited, then we are going to save to <code>solution</code> the key-value pair of `{ (0, 1): (0, 0) }.</p><h3 id=back-tracking>Back Tracking</h3><p><img src=/posts/python/fun-series/images/back_tracking.gif alt="Back Tracking"></p><p>After reaching the endpoint, all we need to do is back tracking from the endpoint to the starting point. We also color the path with <strong>yellow</strong>.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>back_tracking</span>():
+    row, column <span style=color:#f92672>=</span> end_y, end_x
+    block<span style=color:#f92672>.</span>color(<span style=color:#e6db74>&#34;yellow&#34;</span>)
+
+    <span style=color:#66d9ef>while</span> (row, column) <span style=color:#f92672>!=</span> (start_y, start_x):
+        cor_x <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>588</span> <span style=color:#f92672>+</span> (column <span style=color:#f92672>*</span> <span style=color:#ae81ff>24</span>)
+        cor_y <span style=color:#f92672>=</span> <span style=color:#ae81ff>288</span> <span style=color:#f92672>-</span> (row <span style=color:#f92672>*</span> <span style=color:#ae81ff>24</span>)
+
+        block<span style=color:#f92672>.</span>draw_block(cor_x, cor_y)
+        row, column <span style=color:#f92672>=</span> solution[row, column]
+</code></pre></div><p>Back tracking means going back step by step, which fit into a loop. The stopping condition is when the indexes of the current square matches that of the starting point. We start from the endpoint. If the indexes do not match, we color the square yellow. Then we move backward using the <code>solution</code> dictionary. The <code>key</code> will be the current square&rsquo;s indexes, the value returned is the indexes of the previous square.</p><p>And that&rsquo;s it. Now we have an animated 2d maze solver using BFS algorithm.</p><p><a href=posts/python/fun-series/codes/mazeSolver.py>Code</a></p></div></div></main><footer class=bottom><small>Copyright 2021 Nguyen Viet Cuong</small></footer></section></body></html>
