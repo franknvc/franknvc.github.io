@@ -1,0 +1,40 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Frank's Redily</title><link rel=stylesheet href=/css/bulma.min.css><link rel=stylesheet href=/css/style.css></head><body class=terminal><section class=window><header class=window-header><div class="logo terminal-prompt"><a href=https://franknvc.github.io/ class=no-style>Frank's Redily</a>
+<span style=color:blue>:~#</span>
+<a href=https://franknvc.github.io/posts>posts</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/web-development>web-development</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/web-development/how-to-setup-javascript>how-to-setup-javascript</a><span style=color:#1a95e0>/</span></div><div class=window-controls><span class="control-item control-minimize">‒</span>
+<span class="control-item control-maximize">□</span>
+<span class="control-item control-close">˟</span></div></header><main class=window-content id=content><div class=container><div class=window-cursor><span class=i-cursor-indicator>></span><div class=terminal-nav><nav class=terminal-menu><ul vocab="https://schema.org/" typeof="BreadcrumbList"><li><a href=/about typeof="ListItem">/about</a></li><li><a href=/posts typeof="ListItem">/posts</a></li><li><a href=/projects typeof="ListItem">/projects</a></li><li><a href=/gallery typeof="ListItem">/photos</a></li><li><a href=/resume typeof="ListItem">/resumé</a></li></ul></nav></div><span class=i-cursor-underscore></span></div><div class=scrollable><h1>[Web Dev] How to setup a JavaScript project</h1>Apr. 19, 2021<br><br><p>This post shows you how to set up a JavaScript project from scratch, from which you can include a frontend (e.g. React) or a backend (e.g. Express.js).</p><h2 id=setup-a-javascript-project-with-node>Setup a JavaScript project with Node</h2><p>In order to get started with your new project, create the project folder using the command line or you tools of choice, and navigate into it:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir js-project
+cd js-project
+</code></pre></div><p>In the next step, we will initialize the project with <code>npm</code> which comes with two benefits. First, you can install libraries to you project. And second, you can add <code>npm</code> scripts to start, test, or deploy your project. Initialize the <code>npm</code> with command line:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>npm init -y
+</code></pre></div><p>Now, the initialization should create a <code>package.json</code> file which will be filled with your defaults. The content of the file will look like this:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;js-project&#34;</span>,
+  <span style=color:#f92672>&#34;version&#34;</span>: <span style=color:#e6db74>&#34;1.0.0&#34;</span>,
+  <span style=color:#f92672>&#34;description&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>,
+  <span style=color:#f92672>&#34;main&#34;</span>: <span style=color:#e6db74>&#34;index.js&#34;</span>,
+  <span style=color:#f92672>&#34;scripts&#34;</span>: {
+    <span style=color:#f92672>&#34;test&#34;</span>: <span style=color:#e6db74>&#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;</span>
+  },
+  <span style=color:#f92672>&#34;keywords&#34;</span>: [],
+  <span style=color:#f92672>&#34;author&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>,
+  <span style=color:#f92672>&#34;license&#34;</span>: <span style=color:#e6db74>&#34;ISC&#34;</span>
+}
+</code></pre></div><p>Next, create a <code>src/</code> directory for your project&rsquo;s source code. In this directory, create a <code>src/index.js</code> file as an entry point to your project:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir src
+cd src
+touch index.js
+</code></pre></div><p>Test your setup by adding <code>console.log('Hello World!');</code> to your <code>index.js</code> file and run the command:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>node src/index.js
+</code></pre></div><p>The logging should appear in the command line after the script is executed. As mention above, you can config your <code>package.json</code> file to run scripts for starting, testing, and deploying. You can define the command above as the starting script:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+    <span style=color:#f92672>&#34;scripts&#34;</span>: {
+        <span style=color:#f92672>&#34;start&#34;</span>: <span style=color:#e6db74>&#34;node src/index.js&#34;</span>,
+        <span style=color:#f92672>&#34;test&#34;</span>: <span style=color:#e6db74>&#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;</span>
+    },
+}
+</code></pre></div><p>Now you can run <code>npm start</code> in the command line and it will work like before without the specifics of the underlying script.</p><h2 id=nodejs-with-nodemon>Node.js with nodemon</h2><p>You are able to start your application by running the <code>npm</code> start script. However, you need to restart manually everytime you modify your source code. You can change this behaviour with <code>nodemon</code> library. Install <code>nodemon</code></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>npm install nodemon --save-dev
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;main&#34;</span>: <span style=color:#e6db74>&#34;index.js&#34;</span>,
+  <span style=color:#f92672>&#34;scripts&#34;</span>: {
+    <span style=color:#f92672>&#34;start&#34;</span>: <span style=color:#e6db74>&#34;nodemone src/index.js&#34;</span>,
+    <span style=color:#f92672>&#34;test&#34;</span>: <span style=color:#e6db74>&#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;</span>
+  },
+}
+</code></pre></div><p>The script will be executed again once your source code changes. This will remove the hassle of restarting the project every time.</p></div></div></main><footer class=bottom><small>Copyright 2021 Nguyen Viet Cuong</small></footer></section></body></html>
