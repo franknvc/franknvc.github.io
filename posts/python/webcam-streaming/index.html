@@ -43,10 +43,10 @@ time<span style=color:#f92672>.</span>sleep(<span style=color:#ae81ff>2.0</span>
     <span style=color:#66d9ef>return</span> Response(generate(),
                     mimetype<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;multipart/x-mixed/replace boundary=frame&#34;</span>)
 </code></pre></div><p>The final code block handles parsing command line arguments and lauching the Flask app:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;__main__&#39;</span>:
-    parse <span style=color:#f92672>=</span> argparse<span style=color:#f92672>.</span>ArgumentParser()
-    parse<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#34;-i&#34;</span>, <span style=color:#e6db74>&#34;--ip&#34;</span>, type<span style=color:#f92672>=</span>str, required<span style=color:#f92672>=</span>True, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;local ip address&#34;</span>)
-    parse<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#34;-o&#34;</span>, <span style=color:#e6db74>&#34;--port&#34;</span>, type<span style=color:#f92672>=</span>int, required<span style=color:#f92672>=</span>True, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;port number of the server&#34;</span>)
-    args <span style=color:#f92672>=</span> vars(parse<span style=color:#f92672>.</span>parse_args())
+    parser <span style=color:#f92672>=</span> argparse<span style=color:#f92672>.</span>ArgumentParser()
+    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#34;-i&#34;</span>, <span style=color:#e6db74>&#34;--ip&#34;</span>, type<span style=color:#f92672>=</span>str, required<span style=color:#f92672>=</span>True, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;local ip address&#34;</span>)
+    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#34;-o&#34;</span>, <span style=color:#e6db74>&#34;--port&#34;</span>, type<span style=color:#f92672>=</span>int, required<span style=color:#f92672>=</span>True, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;port number of the server&#34;</span>)
+    args <span style=color:#f92672>=</span> vars(parser<span style=color:#f92672>.</span>parse_args())
 
     t <span style=color:#f92672>=</span> threading<span style=color:#f92672>.</span>Thread(target<span style=color:#f92672>=</span>capture, args<span style=color:#f92672>=</span>(
         args[<span style=color:#e6db74>&#34;frame_count&#34;</span>],))
