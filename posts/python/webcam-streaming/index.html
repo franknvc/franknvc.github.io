@@ -1,0 +1,70 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Frank's Redily</title><link rel=stylesheet href=/css/bulma.min.css><link rel=stylesheet href=/css/style.css></head><body class=terminal><section class=window><header class=window-header><div class="logo terminal-prompt"><a href=https://franknvc.github.io/ class=no-style>Frank's Redily</a>
+<span style=color:blue>:~#</span>
+<a href=https://franknvc.github.io/posts>posts</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/python>python</a><span style=color:#1a95e0>/</span>
+<a href=https://franknvc.github.io/posts/python/webcam-streaming>webcam-streaming</a><span style=color:#1a95e0>/</span></div><div class=window-controls><span class="control-item control-minimize">‒</span>
+<span class="control-item control-maximize">□</span>
+<span class="control-item control-close">˟</span></div></header><main class=window-content id=content><div class=container><div class=window-cursor><span class=i-cursor-indicator>></span><div class=terminal-nav><nav class=terminal-menu><ul vocab="https://schema.org/" typeof="BreadcrumbList"><li><a href=/about typeof="ListItem">/about</a></li><li><a href=/posts typeof="ListItem">/posts</a></li><li><a href=/projects typeof="ListItem">/projects</a></li><li><a href=/gallery typeof="ListItem">/photos</a></li><li><a href=/resume typeof="ListItem">/resumé</a></li></ul></nav></div><span class=i-cursor-underscore></span></div><div class=scrollable><h1>[Python] Webcam Streaming with Flask</h1>Apr. 19, 2021<br><br><p>In this post, we will go through the steps to setup a webcam stream to your browser. This can act as the starting point for other projects such as motion detection, or object recognition.</p><p>We are going to use <code>Flask</code>, a micro web framework to facilitate live streaming from your webcam. Install <code>Flask</code>:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>pip install flask
+pip install imutils
+</code></pre></div><p>Create the directory <code>templates</code> and the file <code>index.html</code>. This is where you will embed the video stream. Then create <code>webcam_streaming.py</code>, this will be your <code>Flask</code> app.</p><p>First, in order to capture the video stream from the webcam, we will use the module <code>imutils</code> and its <code>VideoStream</code> class. We initialize a <code>VideoStream</code> object and start the the streaming process</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> imutils.video <span style=color:#f92672>import</span> VideoStream
+
+vs <span style=color:#f92672>=</span> VideoStream(src<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>)<span style=color:#f92672>.</span>start()
+time<span style=color:#f92672>.</span>sleep(<span style=color:#ae81ff>2.0</span>)
+</code></pre></div><p>Next, we define the route to our <code>index.html</code> that will serve the video stream.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#a6e22e>@app.route</span>(<span style=color:#e6db74>&#34;/&#34;</span>)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>index</span>():
+    <span style=color:#66d9ef>return</span> render_template(<span style=color:#e6db74>&#34;index.html&#34;</span>)
+</code></pre></div><p>And here is our <code>capture</code>, <code>generate</code> method for reading in each frame of the video stream. This is also where you can execute image processing methods such as motion detection, or object recognition.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>capture</span>(frame_count):
+    <span style=color:#66d9ef>global</span> vs, output_frame, lock
+
+    <span style=color:#66d9ef>while</span> True:
+        frame <span style=color:#f92672>=</span> vs<span style=color:#f92672>.</span>read()
+        frame <span style=color:#f92672>=</span> imutils<span style=color:#f92672>.</span>resize(frame, width<span style=color:#f92672>=</span><span style=color:#ae81ff>400</span>)
+        <span style=color:#66d9ef>with</span> lock:
+            output_frame <span style=color:#f92672>=</span> frame<span style=color:#f92672>.</span>copy()
+
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>generate</span>():
+    <span style=color:#66d9ef>global</span> output_frame, lock
+
+    <span style=color:#66d9ef>while</span> True:
+        <span style=color:#66d9ef>with</span> lock:
+            <span style=color:#66d9ef>if</span> output_frame <span style=color:#f92672>is</span> None:
+                <span style=color:#66d9ef>continue</span>
+
+            (flag, encoded_image) <span style=color:#f92672>=</span> cv2<span style=color:#f92672>.</span>imencode(<span style=color:#e6db74>&#34;.jpg&#34;</span>, output_frame)
+
+            <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> flag:
+                <span style=color:#66d9ef>continue</span>
+
+        <span style=color:#66d9ef>yield</span> (<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;--frame</span><span style=color:#ae81ff>\r\n</span><span style=color:#e6db74>&#39;</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;Content-Type: image/jpeg</span><span style=color:#ae81ff>\r\n\r\n</span><span style=color:#e6db74>&#39;</span> <span style=color:#f92672>+</span>
+               bytearray(encoded_image) <span style=color:#f92672>+</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;</span><span style=color:#ae81ff>\r\n</span><span style=color:#e6db74>&#39;</span>)
+</code></pre></div><p>We read the next <code>frame</code> from our webcam with <code>vs.read()</code>. We also resize the frame in order to increase the performance, since smaller frame means less data that need processing.</p><p>It is often here that other image processing steps are implemented. For example, one of the most common operation is to convert the frame from RGB to a Gray scale. And then this processed frame is then passed as input to the algorithm such as performing motion detection. In our code, we simply assign the input <code>frame</code> to our <code>output_frame</code> after resizing.</p><p>The next method, <code>generate</code> is a <code>JPEG</code> generator. It grabs the <code>output_frame</code>, then encode the frame as a JPEG image. We are using JPEG compression to reduce load on the network and ensure faster transmission of frames. The <code>flag</code> is to check if compression is successful, otherwise we ignore the error frame and continue.</p><p>Finally, we serve the encoded JPEG frame as a byte array that can be consumed by a web browser.</p><p>The next route to &ldquo;/video_feed&rdquo; serves the JPEG frame generated from the <code>generate</code> method at the URL endpoint <code>http://your_ip/video_feed</code>.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#a6e22e>@app.route</span>(<span style=color:#e6db74>&#34;/video_feed&#34;</span>)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>video_feed</span>():
+    <span style=color:#66d9ef>return</span> Response(generate(),
+                    mimetype<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;multipart/x-mixed/replace boundary=frame&#34;</span>)
+</code></pre></div><p>The final code block handles parsing command line arguments and lauching the Flask app:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;__main__&#39;</span>:
+    parse <span style=color:#f92672>=</span> argparse<span style=color:#f92672>.</span>ArgumentParser()
+    parse<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#34;-i&#34;</span>, <span style=color:#e6db74>&#34;--ip&#34;</span>, type<span style=color:#f92672>=</span>str, required<span style=color:#f92672>=</span>True, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;local ip address&#34;</span>)
+    parse<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#34;-o&#34;</span>, <span style=color:#e6db74>&#34;--port&#34;</span>, type<span style=color:#f92672>=</span>int, required<span style=color:#f92672>=</span>True, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;port number of the server&#34;</span>)
+    args <span style=color:#f92672>=</span> vars(parse<span style=color:#f92672>.</span>parse_args())
+
+    t <span style=color:#f92672>=</span> threading<span style=color:#f92672>.</span>Thread(target<span style=color:#f92672>=</span>capture, args<span style=color:#f92672>=</span>(
+        args[<span style=color:#e6db74>&#34;frame_count&#34;</span>],))
+
+    t<span style=color:#f92672>.</span>daemon <span style=color:#f92672>=</span> True
+    t<span style=color:#f92672>.</span>start()
+
+    app<span style=color:#f92672>.</span>run(host<span style=color:#f92672>=</span>args[<span style=color:#e6db74>&#34;ip&#34;</span>], port<span style=color:#f92672>=</span>args[<span style=color:#e6db74>&#34;port&#34;</span>], debug<span style=color:#f92672>=</span>True, threaded<span style=color:#f92672>=</span>True, use_reloader<span style=color:#f92672>=</span>False)
+</code></pre></div><p>The <code>index.html</code> structure:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=color:#75715e>&lt;!DOCTYPE html&gt;</span>
+&lt;<span style=color:#f92672>html</span> <span style=color:#a6e22e>lang</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;en&#34;</span>&gt;
+  &lt;<span style=color:#f92672>head</span>&gt;
+    &lt;<span style=color:#f92672>meta</span> <span style=color:#a6e22e>charset</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;UTF-8&#34;</span> /&gt;
+    &lt;<span style=color:#f92672>title</span>&gt;Webcam Stream&lt;/<span style=color:#f92672>title</span>&gt;
+  &lt;/<span style=color:#f92672>head</span>&gt;
+  &lt;<span style=color:#f92672>body</span>&gt;
+    &lt;<span style=color:#f92672>h1</span>&gt;Webcam Stream with Flask and OpenCV&lt;/<span style=color:#f92672>h1</span>&gt;
+    &lt;<span style=color:#f92672>img</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{{ url_for(&#39;video_feed&#39;) }}&#34;</span> /&gt;
+  &lt;/<span style=color:#f92672>body</span>&gt;
+&lt;/<span style=color:#f92672>html</span>&gt;
+</code></pre></div><p>Open up a terminal and execute the following command:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>python webcam_streaming.py -i 0.0.0.0 --port <span style=color:#ae81ff>5000</span>
+</code></pre></div><p><a href=webcam_streaming.py>Code</a></p></div></div></main><footer class=bottom><small>Copyright 2021 Nguyen Viet Cuong</small></footer></section></body></html>
