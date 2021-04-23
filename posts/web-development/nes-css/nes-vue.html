@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@next"></script>
+    <link rel="stylesheet" href="https://unpkg.com/nes.css@latest/css/nes.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P /">
+    <title>Vue Form Test</title>
+</head>
+
+<body>
+    <div id="app" style="margin: 0 auto; margin-top: 10%; width: 30%;">
+        <div class="nes-container with-title is-centered">
+            <p class="title">Vue Form Test</p>
+            <form @submit.prevent="submit">
+                <div class="nes-field">
+                    <label for="name_field">Character Name</label>
+                    <input required oninvalid="this.setCustomValidity(this.willValidate?'':'Enter name no blank')"
+                        pattern=".*\S+.*" placeholder="Enter name here" type="text" name="name" id="name_field"
+                        class="nes-input" />
+                </div>
+
+                <section style="margin:10px; padding: 0">
+                    <label>
+                        <input type="radio" value="Male" class="nes-radio" name="gender" checked />
+                        <span>Male</span>
+                    </label>
+                    <label>
+                        <input type="radio" value="Female" class="nes-radio" name="gender" />
+                        <span>Female</span>
+                    </label>
+                    <label>
+                        <input type="radio" value="Other" class="nes-radio" name="gender" />
+                        <span>Other</span>
+                    </label>
+                </section>
+
+                <div class="nes-select job">
+                    <select required name="job" id="default_select" style="margin-bottom: 5px;">
+                        <option value="" disabled selected hidden>Pick A Job...</option>
+                        <option value="Fighter">Fighter</option>
+                        <option value="Mage">Mage</option>
+                        <option value="Druid">Druid</option>
+                        <option value="Sorcerer">Sorcerer</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="button" class="nes-btn is-primary" style="margin: 10px; padding: 0;;">
+                    Submit Name
+                </button>
+        </div>
+
+        </form>
+        <dialog class="nes-dialog" id="dialog-default" ref="dialog">
+            <form method="dialog">
+                <section class="character">
+                    <i class="nes-bcrikko nes-c"></i>
+                    <div class="nes-balloon from-left">
+                        <p>Confirm Character</p>
+                    </div>
+
+                </section>
+                <section class="character info">
+                    <h4 class="topic">Name: {{name}}<span id="name"></span></h4>
+                    <h5>Gender: {{gender}}<span id="gender"></span></h5>
+                    <h5>Job: {{job}}<span id="job"></span></h5>
+                </section>
+                <br>
+                <menu class="dialog-menu">
+                    <button class="nes-btn is-primary">Confirm</button>
+                </menu>
+
+            </form>
+        </dialog>
+    </div>
+    <script>
+
+        const App = {
+            data() {
+                return {
+                    gender: 'Male',
+                    name: '',
+                    job: ''
+
+
+                };
+            },
+            methods: {
+                submit(event) {
+                    const { name, gender, job } = Object.fromEntries(new FormData(event.target));
+                    this.name = name;
+                    this.gender = gender;
+                    this.job = job;
+
+                    this.$refs.dialog.showModal();
+                    console.log(this.$refs.dialog)
+
+                }
+            }
+        };
+
+        const app = Vue.createApp(App);
+        app.mount("#app");
+
+    </script>
+
+</html>
