@@ -18,7 +18,7 @@
   font-family: "Roboto Mono";
   src: url("../font/RobotoMono-Bold.ttf") format("truetype");
   font-style: normal;
-  font-weight: 800;
+  font-weight: 700;
   text-rendering: optimizeLegibility;
 }
 
@@ -26,7 +26,7 @@
   font-family: "Roboto Mono";
   src: url("../font/RobotoMono-BoldItalic.ttf") format("truetype");
   font-style: italic;
-  font-weight: 800;
+  font-weight: 700;
   text-rendering: optimizeLegibility;
 }
 
@@ -48,7 +48,7 @@
   --progress-bar-fill: #151515;
   /* --code-bg-color: black; */
   --input-style: solid;
-  --h1-font-color: #ff0000;
+  --h1-font-color: #ff1818;
   --h2-font-color: #ffff00;
   --h3-font-color: #40e0d0;
   --code-font-color: #7fff00;
@@ -87,7 +87,7 @@ a {
 }
 
 a:hover {
-  color: var(--h2-font-color);
+  color: #39ff14;
 }
 
 em {
@@ -166,6 +166,7 @@ h6,
 .h6 {
   clear: both;
   line-height: var(--global-line-height);
+  font-stretch: expanded;
 }
 
 h1 {
@@ -567,8 +568,8 @@ figure {
     margin-left: 20px;
   }
 
-  .logo {
-    padding: calc(var(--global-space) * 1) 0 calc(var(--global-space) * 1);
+  .logo.terminal-prompt a:hover {
+    color: brown;
   }
 
   figure {
